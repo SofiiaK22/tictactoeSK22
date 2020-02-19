@@ -1,48 +1,49 @@
 dictionary = {'x': [], 'o': []}
-a = dictionary['x']
-b = dictionary['o']
-k = 0
-comb = [[0, 1, 2],[0, 4, 8],[0, 3, 6],[1, 4, 7],[2, 4, 6],[2, 5, 8],[3, 4, 5],[6, 7, 8]]
-def wonlost():
+player = dictionary['x']
+gameStatus = 0
+board = ['_', '|', '_', '|', '_', '\n', '_', '|', '_', '|', '_', '\n', ' ', '|', ' ', '|', ' ']
+
+def view():
+        for d in dictionary['x']:
+            board[d*2]= 'x'
+        for d in dictionary['o']:
+            board[d*2]= 'o'
+        print(''.join(board))
+
+view()
+
+from wonlost import*
+
+def isInputValid(conin, dictionary):
+    if not conin.isdigit():
+        return False
+    n1 = int(conin)
+    if n1 < 1 or  n1 > 9:
+        return False
+    c = n1-1
     for m in dictionary:
-        s = dictionary[m]
-        for f in comb:
-                if f[0] in s and f[1] in s and f[2] in s:
-                    print("won!")
-                    break
+        if c in dictionary[m]:
+            return False
+    return True
 
-from appearanceAB2 import appearance
-appearance(a, b)
-#from won import wonlost1
-conin = ''
-def end():
-    print("End of the game, thanks for playing!")
-def mywhile():
-    k = True
-    while k == True:
-        for m in dictionary:
-            s = dictionary[m]
-            def intconin():
-                conin = input()
-                if conin == '':
-                    end()
-                    global k
-                    k = False
-                    print("Please press Enter to exit.")
-                elif conin.isdigit():
-                    n1 = int(conin) - 1
-                    if n1 in a or n1 in b or n1 > 9 or n1 < 0:
-                        print("Use another number:")
-                        intconin()
-                    else:
-                        s.append(n1)
-                        appearance(a, b)
-                        wonlost()
-                else:
-                    print("Please enter a digit:")
-                    intconin()
-            intconin()
- #           print(a, b, "draw")
-mywhile()
+#print(isInputn1alid('1', {'x': [1]}))
 
+def inputCorrectDigit():
+    conin = input()
+    while not isInputValid(conin, dictionary): 
+        print("Please enter a digit from 1 to 9:")
+        conin = input()
+    return int(conin)-1
+   
+while gameStatus == 0:
+    n1 = inputCorrectDigit()
+    player.append(n1)
+    gameStatus = wonlost(player)
+    if gameStatus == 0:
+        player = dictionary['o'] if player is dictionary['x'] else dictionary['x']
+    view()
 
+if gameStatus == 1:
+    print('Draw - Game over!')
+elif gameStatus == 2:
+    print( 'Player X won! - Game over!' if player is dictionary['x'] else 'Player O won! - Game over!')
