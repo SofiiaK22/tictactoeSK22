@@ -11,13 +11,8 @@ def wonlost(turnsList):
 
 def checkWin(turnsList):
     result = 0
-    if checkDiagonalForward(turnsList) == 3:
-        result = 2
-    if checkDiagonalBackward(turnsList) == 3:
-        result = 2
-    if checkHorisontal(turnsList) == 3:
-        result = 2
-    if checkVertical(turnsList) == 3:
+    checks = [checkDiagonalForward, checkDiagonalBackward, checkHorisontal, checkVertical]
+    if max([check(turnsList) for check in checks]) == 3:
         result = 2        
     return result
 
@@ -40,24 +35,14 @@ def checkHorisontal(turnsList):
     result = 0
     listI = [0,0,0]
     for f in turnsList:
-        if f//3 == 0:
-            listI[0] += 1
-        elif f//3 == 1:
-            listI[1] += 1
-        elif f//3 == 2:
-            listI[2] += 1
+        listI[f//3] += 1
     return max(listI)
     
 def checkVertical(turnsList):
     result = 0
     listJ = [0,0,0]
     for f in turnsList:
-        if f%3 == 0:
-            listJ[0] += 1
-        elif f%3 == 1:
-            listJ[1] += 1
-        elif f%3 == 2:
-            listJ[2] += 1
+        listJ[f%3] += 1
     return max(listJ)
     
 #print(checkDiagonalForward([0,4,8]))

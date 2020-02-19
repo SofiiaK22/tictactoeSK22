@@ -1,13 +1,13 @@
-dictionary = {'x': [], 'o': []}
-player = dictionary['x']
+dictionary = {'X': [], 'O': []}
+player = 'X'
 gameStatus = 0
 board = ['_', '|', '_', '|', '_', '\n', '_', '|', '_', '|', '_', '\n', ' ', '|', ' ', '|', ' ']
 
 def view():
-        for d in dictionary['x']:
-            board[d*2]= 'x'
-        for d in dictionary['o']:
-            board[d*2]= 'o'
+        for d in dictionary['X']:
+            board[d*2]= 'X'
+        for d in dictionary['O']:
+            board[d*2]= 'O'
         print(''.join(board))
 
 view()
@@ -26,7 +26,7 @@ def isInputValid(conin, dictionary):
             return False
     return True
 
-#print(isInputn1alid('1', {'x': [1]}))
+#print(isInputn1alid('1', {'X': [1]}))
 
 def inputCorrectDigit():
     conin = input()
@@ -37,13 +37,13 @@ def inputCorrectDigit():
    
 while gameStatus == 0:
     n1 = inputCorrectDigit()
-    player.append(n1)
-    gameStatus = wonlost(player)
+    dictionary[player].append(n1)
+    gameStatus = wonlost(dictionary[player])
     if gameStatus == 0:
-        player = dictionary['o'] if player is dictionary['x'] else dictionary['x']
+        player = 'O' if player is 'X' else 'X'
     view()
 
 if gameStatus == 1:
     print('Draw - Game over!')
 elif gameStatus == 2:
-    print( 'Player X won! - Game over!' if player is dictionary['x'] else 'Player O won! - Game over!')
+    print( 'Player ', player, ' won! - Game over!')
