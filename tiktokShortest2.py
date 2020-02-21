@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 dictionary = {'X': [], 'O': []}
 player = 'X'
 a = dictionary['X']
@@ -60,13 +62,21 @@ def pathToTake(player):
         theTry.append(x)
         gameStatus = wonlost(theTry)
         gameEnding(gameStatus)
+        player = 'O' if player == 'X' else 'X'
         if wonlost(theTry) == 2:
-            return x        
+            result = int(x)        
             break
-            if wonlost
-        player = 'O' if player is 'X' else 'X'
+        elif wonlost(theTry) == 1:
+            result = int(x)
+            break
+        elif wonlost(player) == 2:
+            result = int(x)
+            break
+        player = 'O' if player == 'X' else 'X'
         pathToTake(player)
         theTry.remove(x)
+        return result
+
 
 def tryTheTry():
     if wonlost(dictionary[player]) != 0:
@@ -83,7 +93,7 @@ while gameStatus == 0:
     dictionary[player].append(n1)
     gameStatus = wonlost(dictionary[player])
     if gameStatus == 0:
-        player = 'O' if player is 'X' else 'X'
+        player = 'O' if player == 'X' else 'X'
     view()
 '''
 #print(freeSpaces(a, b))
@@ -99,6 +109,6 @@ while gameStatus == 0:
     gameStatus = wonlost(dictionary[player])
     gameEnding(gameStatus)
     if gameStatus == 0:
-        player = 'O' if player is 'X' else 'X'
+        player = 'O' if player == 'X' else 'X'
     view()
 
