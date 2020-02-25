@@ -23,11 +23,6 @@ view()
 from wonlost import*
 
     
-def gameEnding(gameStatus):
-    if gameStatus == 1:
-        print('Draw - Game over!')
-    elif gameStatus == 2:
-        print( 'Player ', player, ' won! - Game over!')
  
 
 def isInputValid(conin, dictionary):
@@ -55,32 +50,33 @@ def walk(a,b):
         result = random.choice(temp)
     return result 
 
-def pathToTake(player): 
-    temp = freeSpaces(a,b)
-    theTry = dictionary[player].copy()
-    for x in temp:
-        theTry.append(x)
-        gameStatus = wonlost(theTry)
-        gameEnding(gameStatus)
-        player = 'O' if player == 'X' else 'X'
-        if wonlost(theTry) == 2:
-            result = int(x)        
-            break
-        elif wonlost(theTry) == 1:
-            result = int(x)
-            break
-        elif wonlost(player) == 2:
-            result = int(x)
-            break
-        player = 'O' if player == 'X' else 'X'
-        pathToTake(player)
-        theTry.remove(x)
-        return result
+def pathToTake(a,b,player):
+    if wonlost(a) == 2:
+        u = [+1, None]
+    if wonlost(a) == 1 or wonlost(b)==1:
+        u = [0, None]
+    if wonlost(b) == 2:
+        u = [-1, None]
+    nextPlayer = 'O' if player == 'X' else 'X'
+    theTryb = b.copy()
+    theTrya = a.copy()
+    for x in freeSpaces(theTrya,theTryb):   
+        if player == 'O':
+            theTryb.append(x)
+        else:
+            theTrya.append(x)
+        pathToTake(theTrya,theTryb, nextPlayer)
+        return x
+    useableList = [u[0], x]
+    return useableList
 
 
-def tryTheTry():
-    if wonlost(dictionary[player]) != 0:
-        pathToTake('O')
+def tryTheTry(a,b,player):
+    if wonlost(dictionary[player]) == 0:
+        thePath = pathToTake(a,b, player)
+    return int(thePath[1])    
+'''    else:
+        thePath = '''
 
 def inputCorrectDigit(conin):
     while not isInputValid(conin, dictionary): 
@@ -90,6 +86,7 @@ def inputCorrectDigit(conin):
 '''   
 while gameStatus == 0:
     n1 = inputCorrectDigit()
+    onlost() == 2:
     dictionary[player].append(n1)
     gameStatus = wonlost(dictionary[player])
     if gameStatus == 0:
@@ -104,11 +101,14 @@ while gameStatus == 0:
         n1 = inputCorrectDigit(input())
         dictionary[player].append(n1)
     else: 
-        n1 = tryTheTry()
+        n1 = tryTheTry(a, b, player)
         dictionary[player].append(n1)
     gameStatus = wonlost(dictionary[player])
-    gameEnding(gameStatus)
     if gameStatus == 0:
         player = 'O' if player == 'X' else 'X'
     view()
 
+if gameStatus == 1:
+    print('Draw - Game over!')
+elif gameStatus == 2:
+    print( 'Player ', player, ' won! - Game over!')
