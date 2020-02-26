@@ -2,8 +2,8 @@
 
 dictionary = {'X': [], 'O': []}
 player = 'X'
-a = dictionary['X']
-b = dictionary['O']
+Lista = dictionary['X']
+Listb = dictionary['O']
 gameStatus = 0
 
 import random
@@ -40,7 +40,7 @@ def isInputValid(conin, dictionary):
 #print(isInputn1alid('1', {'X': [1]}))
 
 def freeSpaces(a,b):
-    return list(set(range(0,9)).difference(set(a)).difference(set(b)))
+    return list(set(range(0,9)).difference(set(Lista)).difference(set(Listb)))
     
 #print(freeSpaces(a, b), a, b)
 
@@ -51,23 +51,39 @@ def walk(a,b):
     return result 
 
 def pathToTake(a,b,player):
+    f = 0
+    u = [] 
     if wonlost(a) == 2:
         u = [+1, None]
     if wonlost(a) == 1 or wonlost(b)==1:
         u = [0, None]
     if wonlost(b) == 2:
         u = [-1, None]
-    nextPlayer = 'O' if player == 'X' else 'X'
-    theTryb = b.copy()
-    theTrya = a.copy()
-    for x in freeSpaces(theTrya,theTryb):   
-        if player == 'O':
-            theTryb.append(x)
-        else:
-            theTrya.append(x)
-        pathToTake(theTrya,theTryb, nextPlayer)
-        return x
-    useableList = [u[0], x]
+    else:
+        nextPlayer = 'O' if player == 'X' else 'X'
+        theTryb = b.copy()
+        theTrya = a.copy()
+        for x in freeSpaces(theTrya,theTryb):   
+            if Lista == theTrya and Listb == theTryb:
+                f = x
+            print(f)
+            if player == 'O':
+                theTryb.append(x)
+                if wonlost(theTryb) == 2:
+                    u = [+1, x]
+                if wonlost(theTryb)==1:
+                    u = [0, x]
+            else:
+                theTrya.append(x)
+                if wonlost(theTrya) == 2:
+                    u = [-1, x]
+                if wonlost(theTrya) == 1:
+                    u = [0, x]
+            pathToTake(theTrya,theTryb, nextPlayer)
+            useableList = [u[0], f]
+            #if wonlost(theTrya) == 0 and wonlost(theTryb) == 0:
+            #    if u[0] == +1 or u[0] == 0 or u[0] == -1:
+            #        break
     return useableList
 
 
@@ -101,7 +117,7 @@ while gameStatus == 0:
         n1 = inputCorrectDigit(input())
         dictionary[player].append(n1)
     else: 
-        n1 = tryTheTry(a, b, player)
+        n1 = tryTheTry(dictionary['X'], dictionary['O'], player)
         dictionary[player].append(n1)
     gameStatus = wonlost(dictionary[player])
     if gameStatus == 0:
