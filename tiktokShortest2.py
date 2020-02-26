@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-dictionary = {'X': [], 'O': []}
+dictionary = {'X': [1,6,8], 'O': [3,5,7]}
 player = 'X'
 Lista = dictionary['X']
 Listb = dictionary['O']
