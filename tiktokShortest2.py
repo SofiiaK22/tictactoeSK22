@@ -62,29 +62,27 @@ def pathToTake(a,b,player):
         u = [-1, None]
     else:
         nextPlayer = 'O' if player == 'X' else 'X'
-        theTryb = b.copy()
-        theTrya = a.copy()
-        for x in freeSpaces(theTrya,theTryb):   
-            if Lista == theTrya and Listb == theTryb:
+        for x in freeSpaces(a,b):   
+            if Lista == a and Listb == b:
                 f = x
             print(f)
             if player == 'O':
-                theTryb.append(x)
-                if wonlost(theTryb) == 2:
+                b.append(x)
+                if wonlost(b) == 2:
                     u = [+1, x]
-                if wonlost(theTryb)==1:
+                if wonlost(b)==1:
                     u = [0, x]
             else:
-                theTrya.append(x)
-                if wonlost(theTrya) == 2:
+                a.append(x)
+                if wonlost(a) == 2:
                     u = [-1, x]
-                if wonlost(theTrya) == 1:
+                if wonlost(a) == 1:
                     u = [0, x]
-            pathToTake(theTrya,theTryb, player)
-            useableList = [u[0], f]
-            if wonlost(theTrya) == 0 and wonlost(theTryb) == 0:
+            pathToTake(a,b, nextPlayer)
+            if wonlost(a) == 0 and wonlost(b) == 0:
                 if u[0] == +1 or u[0] == 0 or u[0] == -1:
                     break
+    useableList = [u[0], f]
     return useableList
 
 
