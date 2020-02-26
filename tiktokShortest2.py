@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-dictionary = {'X': [], 'O': []}
+dictionary = {'X': [1,6, 8], 'O': [3, 5, 7]}
 player = 'X'
 Lista = dictionary['X']
 Listb = dictionary['O']
@@ -51,10 +51,8 @@ def walk(a,b):
     return result 
 
 def pathToTake(a,b,player):
+    useableList = []
     print(a,b, player)
-    f = 0
-    u = None
-    useableList = [u, f]
     if wonlost(a) == 2:
         u = -1
     elif wonlost(a) == 1 or wonlost(b)==1:
@@ -63,28 +61,27 @@ def pathToTake(a,b,player):
         u = +1
     else:                                                           #I shouldn't have copied the a and b
         nextPlayer = 'O' if player == 'X' else 'X'                  #player change, it's correct
-        for x in freeSpaces(b,a):                                    #so it uses the right x and the correct freeSpaces(), and it is also just moving "horizontaly"(talking about the table), not downwards
-            newA = a.copy()
-            newB = b.copy()
+        newA = a.copy()
+        newB = b.copy()
+        for x in freeSpaces(a,b):                                    #so it uses the right x and the correct freeSpaces(), and it is also just moving "horizontaly"(talking about the table), not downwards
             print('x=',x)
-            if Lista == a and Listb == b:
-                f = x                                               # since I don't want to use the "last" x but the first one, I added the f variable, which remains the same for the recursion
-                print('f=',f)                                                #to check if the f is correct, and it is!
             if player == 'O':
                 newB.append(x)
             else:
                 newA.append(x)
-            useableList = [u, f]                                         #here is the problem, the list index u[0] is out of range
-            if useableList[0] == -1:
+            r = pathToTake(newA,newB, nextPlayer)
+            print(r)
+            if r[0] == 0:
+                useableList.append(r[0])
+                useableList.append(x)
                 continue
-            if useableList[0] == 0:
-                return useableList
-                continue
-            if useableList[0] == 1:
-                return useableList
+            if r[0] == 1:
+                useableList.append(r[0])
+                useableList.append(x)
                 break
+            if r[0] == -1:
+                continue
             print('u=',u)
-            pathToTake(newA,newB, nextPlayer)
     return useableList
 
 
