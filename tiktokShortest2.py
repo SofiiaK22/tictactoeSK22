@@ -53,6 +53,7 @@ def walk(a,b):
 def pathToTake(a,b,player):
     f = 0
     u = [] 
+    useableList = [None, None]
     if wonlost(a) == 2:
         u = [+1, None]
     if wonlost(a) == 1 or wonlost(b)==1:
@@ -79,11 +80,11 @@ def pathToTake(a,b,player):
                     u = [-1, x]
                 if wonlost(theTrya) == 1:
                     u = [0, x]
-            pathToTake(theTrya,theTryb, nextPlayer)
+            pathToTake(theTrya,theTryb, player)
             useableList = [u[0], f]
-            #if wonlost(theTrya) == 0 and wonlost(theTryb) == 0:
-            #    if u[0] == +1 or u[0] == 0 or u[0] == -1:
-            #        break
+            if wonlost(theTrya) == 0 and wonlost(theTryb) == 0:
+                if u[0] == +1 or u[0] == 0 or u[0] == -1:
+                    break
     return useableList
 
 
@@ -117,7 +118,7 @@ while gameStatus == 0:
         n1 = inputCorrectDigit(input())
         dictionary[player].append(n1)
     else: 
-        n1 = tryTheTry(dictionary['X'], dictionary['O'], player)
+        n1 = tryTheTry(Lista, Listb, player)
         dictionary[player].append(n1)
     gameStatus = wonlost(dictionary[player])
     if gameStatus == 0:
