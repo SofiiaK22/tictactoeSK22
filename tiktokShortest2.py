@@ -64,25 +64,19 @@ def pathToTake(a,b,player):
     else:                                                           #I shouldn't have copied the a and b
         nextPlayer = 'O' if player == 'X' else 'X'                  #player change, it's correct
         for x in freeSpaces(a,b):                                   #so it uses the right x and the correct freeSpaces(), and it is also just moving "horizontaly"(talking about the table), not downwards
+            newA = a.copy()
+            newB = b.copy()
             print('x=',x)
             if Lista == a and Listb == b:
                 f = x                                               # since I don't want to use the "last" x but the first one, I added the f variable, which the same for the recursion
                 print('f=',f)                                                #to check if the f is correct, and it is!
             if player == 'O':
-                b.append(x)
+                newB.append(x)
+                return newB
             else:
-                a.append(x)
-            if wonlost(b) == 2:
-                u = +1
-            elif wonlost(b)==1:
-                u = 0
-            elif wonlost(a) == 2:
-                u = -1
-            elif wonlost(a) == 1:
-                u = 0
-            if u == +1 or u == 0 or u == -1:
-                break
-            pathToTake(a,b, nextPlayer)
+                newA.append(x)
+                return newA
+            pathToTake(newA,newB, nextPlayer)
     print('u=',u)
     useableList = [u, f]                                         #here is the problem, the list index u[0] is out of range
     return useableList
