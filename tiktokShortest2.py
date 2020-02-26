@@ -60,12 +60,12 @@ def pathToTake(a,b,player):
         u = [0, None]
     if wonlost(b) == 2:
         u = [-1, None]
-    else:
-        nextPlayer = 'O' if player == 'X' else 'X'
-        for x in freeSpaces(a,b):   
+    else:                                                           #I shouldn't have copied the a and b
+        nextPlayer = 'O' if player == 'X' else 'X'                  #player change, it's correct
+        for x in freeSpaces(a,b):                                   #so it uses the right x and the correct freeSpaces(), and it is also just moving "horizontaly"(talking about the table), not downwards
             if Lista == a and Listb == b:
-                f = x
-            print(f)
+                f = x                                               # since I don't want to use the "last" x but the first one, I added the f variable, which the same for the recursion
+            print(f)                                                #to check if the f is correct, and it is!
             if player == 'O':
                 b.append(x)
                 if wonlost(b) == 2:
@@ -78,11 +78,11 @@ def pathToTake(a,b,player):
                     u = [-1, x]
                 if wonlost(a) == 1:
                     u = [0, x]
-            pathToTake(a,b, nextPlayer)
-            if wonlost(a) == 0 and wonlost(b) == 0:
+            pathToTake(a,b, nextPlayer) 
+            if wonlost(a) == 0 and wonlost(b) == 0:                 #even if I delete the next 3 lines, nothing changes
                 if u[0] == +1 or u[0] == 0 or u[0] == -1:
                     break
-    useableList = [u[0], f]
+    useableList = [u[0], f]                                         #here is the problem, the list index u[0] is out of range
     return useableList
 
 
