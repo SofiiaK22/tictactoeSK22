@@ -51,38 +51,40 @@ def walk(a,b):
     return result 
 
 def pathToTake(a,b,player):
+    print(a,b, player)
     f = 0
-    u = [] 
-    useableList = [None, None]
+    u = None
+    useableList = [u, f]
     if wonlost(a) == 2:
-        u = [+1, None]
-    if wonlost(a) == 1 or wonlost(b)==1:
-        u = [0, None]
-    if wonlost(b) == 2:
-        u = [-1, None]
+        u = -1
+    elif wonlost(a) == 1 or wonlost(b)==1:
+        u = 0
+    elif wonlost(b) == 2:
+        u = +1
     else:                                                           #I shouldn't have copied the a and b
         nextPlayer = 'O' if player == 'X' else 'X'                  #player change, it's correct
         for x in freeSpaces(a,b):                                   #so it uses the right x and the correct freeSpaces(), and it is also just moving "horizontaly"(talking about the table), not downwards
+            print('x=',x)
             if Lista == a and Listb == b:
                 f = x                                               # since I don't want to use the "last" x but the first one, I added the f variable, which the same for the recursion
-            print(f)                                                #to check if the f is correct, and it is!
+                print('f=',f)                                                #to check if the f is correct, and it is!
             if player == 'O':
                 b.append(x)
-                if wonlost(b) == 2:
-                    u = [+1, x]
-                if wonlost(b)==1:
-                    u = [0, x]
             else:
                 a.append(x)
-                if wonlost(a) == 2:
-                    u = [-1, x]
-                if wonlost(a) == 1:
-                    u = [0, x]
-            pathToTake(a,b, nextPlayer) 
-            if wonlost(a) == 0 and wonlost(b) == 0:                 #even if I delete the next 3 lines, nothing changes
-                if u[0] == +1 or u[0] == 0 or u[0] == -1:
-                    break
-    useableList = [u[0], f]                                         #here is the problem, the list index u[0] is out of range
+            if wonlost(b) == 2:
+                u = +1
+            elif wonlost(b)==1:
+                u = 0
+            elif wonlost(a) == 2:
+                u = -1
+            elif wonlost(a) == 1:
+                u = 0
+            if u == +1 or u == 0 or u == -1:
+                break
+            pathToTake(a,b, nextPlayer)
+    print('u=',u)
+    useableList = [u, f]                                         #here is the problem, the list index u[0] is out of range
     return useableList
 
 
