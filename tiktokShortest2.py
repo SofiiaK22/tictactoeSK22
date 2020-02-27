@@ -1,7 +1,8 @@
 #!/usr/bin/python
 
-dictionary = {'X': [1,6, 8], 'O': [3, 5, 7]}
+dictionary = {'X': [], 'O': []}
 player = 'X'
+PC = 'O'
 Lista = dictionary['X']
 Listb = dictionary['O']
 gameStatus = 0
@@ -22,8 +23,6 @@ view()
 
 from wonlost import*
 
-    
- 
 
 def isInputValid(conin, dictionary):
     if not conin.isdigit():
@@ -40,7 +39,7 @@ def isInputValid(conin, dictionary):
 #print(isInputn1alid('1', {'X': [1]}))
 
 def freeSpaces(a,b):
-    return list(set(range(0,9)).difference(set(Lista)).difference(set(Listb)))
+    return list(set(range(0,9)).difference(set(a)).difference(set(b)))
     
 #print(freeSpaces(a, b), a, b)
 
@@ -50,54 +49,61 @@ def walk(a,b):
         result = random.choice(temp)
     return result 
 
-def pathToTake(a,b,player,u, f):
-    useableList = [0]
+#minimaxfun returns the list which the player uses to win depending in the variable player
+def minimaxfun(minimax, player):    
+    x = [-2,None] if player == 'O' else [2,None]
+    for t in minimax:
+        if player == 'O':
+            if t[0] > x[0]:
+                x = t
+        elif player == 'X':
+            if t[0] < x[0]:
+                x = t
+    #print('minimax:',minimax, player, x)
+    return x
+'''print(minimaxfun([[0,0], [-1,2]], 'X'))
+exit(0)
+minimax = [[0,0], [-1,2],[23,123]]
+a = 0
+for t in minimax:
+    a += t[0]
+print(x)
+exit(0)
+x = 2
+for t in minimax:
+    if t[0] < x:
+        x = t[0]'''
+
+def pathToTake(a,b,player):
     minimax = []
-    print(a,b, player)
     if wonlost(a) == 2:
-        u = -1
+        return [-1, None]
     elif wonlost(a) == 1 or wonlost(b)==1:
-        u = 0
+        return [0, None]
     elif wonlost(b) == 2:
-        u = +1
-    else:                                                           #I shouldn't have copied the a and b
-        nextPlayer = 'O' if player == 'X' else 'X'                  #player change, it's correct
-        newA = a.copy()
-        newB = b.copy()
-        for x in freeSpaces(a,b):                                    #so it uses the right x and the correct freeSpaces(), and it is also just moving "horizontaly"(talking about the table), not downwards
-            useableList.append(x)
-            print('x=',x)
-            #if player == 'O':
-            #    newB.append(x)
-            #else:
-            #    newA.append(x)
-            r = pathToTake(newA,newB, nextPlayer,u, f)
-            print(r)
-            minimax.append(r)
-        for t in minimax:
-            if player == 'O' and t[0] == 1:
-                u = t[1]
-                f = t[2]
-                newB.append(t[1])
-            elif player == 'x' and t[0] == -1:
-                u = t[1]
-                f = t[2]
-                newA.append(t[1])
-            elif t[0] == 0:
-                u = t[1]
-                f = t[2]
-                if player == 'O':
-                    newB.append(f)
-                else:
-                    newA.append(f)
-        useableList[0] = u
-    return useableList
+        return [1, None]
+    else:                                                           
+        nextPlayer = 'O' if player == 'X' else 'X'                 
+        for x in freeSpaces(a,b):                                    
+            newA = a.copy()
+            newB = b.copy()
+            if player == 'O':
+                newB.append(x)
+            else:
+                newA.append(x)
+            r = pathToTake(newA,newB, nextPlayer)
+            t = [r[0], x]
+            minimax.append(t)
+    #if b==Listb and a==Lista:
+    ##    print(minimax)
+    #print('pathToTake:', a,b, player, minimax,freeSpaces(a,b))
+    return minimaxfun(minimax, player)
 
 
 def tryTheTry(a,b,player):
     if wonlost(dictionary[player]) == 0:
-        thePath = pathToTake(a,b, player, None, None)
-        print(thePath)
+        thePath = pathToTake(a,b, player)
+        #print(thePath)
     return int(thePath[1])    
 '''    else:
         thePath = '''
