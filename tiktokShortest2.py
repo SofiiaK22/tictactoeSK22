@@ -50,8 +50,9 @@ def walk(a,b):
         result = random.choice(temp)
     return result 
 
-def pathToTake(a,b,player):
-    useableList = []
+def pathToTake(a,b,player,u, f):
+    useableList = [0]
+    minimax = []
     print(a,b, player)
     if wonlost(a) == 2:
         u = -1
@@ -64,30 +65,38 @@ def pathToTake(a,b,player):
         newA = a.copy()
         newB = b.copy()
         for x in freeSpaces(a,b):                                    #so it uses the right x and the correct freeSpaces(), and it is also just moving "horizontaly"(talking about the table), not downwards
+            useableList.append(x)
             print('x=',x)
-            if player == 'O':
-                newB.append(x)
-            else:
-                newA.append(x)
-            r = pathToTake(newA,newB, nextPlayer)
+            #if player == 'O':
+            #    newB.append(x)
+            #else:
+            #    newA.append(x)
+            r = pathToTake(newA,newB, nextPlayer,u, f)
             print(r)
-            if r[0] == 0:
-                useableList.append(r[0])
-                useableList.append(x)
-                continue
-            if r[0] == 1:
-                useableList.append(r[0])
-                useableList.append(x)
-                break
-            if r[0] == -1:
-                continue
-            print('u=',u)
+            minimax.append(r)
+        for t in minimax:
+            if player == 'O' and t[0] == 1:
+                u = t[1]
+                f = t[2]
+                newB.append(t[1])
+            elif player == 'x' and t[0] == -1:
+                u = t[1]
+                f = t[2]
+                newA.append(t[1])
+            elif t[0] == 0:
+                u = t[1]
+                f = t[2]
+                if player == 'O':
+                    newB.append(f)
+                else:
+                    newA.append(f)
+        useableList[0] = u
     return useableList
 
 
 def tryTheTry(a,b,player):
     if wonlost(dictionary[player]) == 0:
-        thePath = pathToTake(a,b, player)
+        thePath = pathToTake(a,b, player, None, None)
         print(thePath)
     return int(thePath[1])    
 '''    else:
